@@ -1,9 +1,7 @@
 /**
  * API Service
- * Handles all API calls to the backend
+ * Handles all API calls to Vercel Serverless Functions
  */
-
-const API_BASE_URL = '/api'
 
 /**
  * Create a new gallery
@@ -12,7 +10,7 @@ const API_BASE_URL = '/api'
  * @returns {Promise<Object>} Created gallery data
  */
 export const createGallery = async (title, driveLink) => {
-  const response = await fetch(`${API_BASE_URL}/galleries`, {
+  const response = await fetch('/api/create-gallery', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -54,12 +52,20 @@ export const decodeGalleryData = (slug) => {
  * @returns {Promise<Object>} Images array
  */
 export const getGalleryImages = async (folderId) => {
-  const response = await fetch(`${API_BASE_URL}/galleries/${folderId}/images`)
+  const response = await fetch(`/api/get-images?folderId=${encodeURIComponent(folderId)}`)
   const data = await response.json()
 
   if (!response.ok) {
     throw new Error(data.error || 'טעינת התמונות נכשלה')
   }
 
-  return data
+  // Transform images to use our proxy
+  const images = (data.images || []).map(img => ({
+    ...img,
+    url: `/api/image?id=${img.id}`,
+    thumbnail: `/api/image?id=${img.id}`,
+    downloadUrl: `/api/image?id=${img.id}&download=true`
+  }))
+
+  return { images }
 }

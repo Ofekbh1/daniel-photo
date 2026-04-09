@@ -1,6 +1,6 @@
-# Daniel Photo - MVP SaaS
+# Daniel's Photo - Gallery Platform
 
-A beautiful photo gallery SaaS for photographers. Create stunning galleries from Google Drive folders and share them with clients.
+A beautiful photo gallery platform for photographers. Create stunning galleries from Google Drive folders and share them with clients.
 
 ## 🎯 Features
 
@@ -15,19 +15,22 @@ A beautiful photo gallery SaaS for photographers. Create stunning galleries from
 ## 🧩 Tech Stack
 
 - **Frontend:** React + Vite
-- **Backend:** Node.js + Express
-- **Database:** PostgreSQL
+- **Backend:** Vercel Serverless Functions
 - **Styling:** Custom CSS
 
 ## 📁 Project Structure
 
 ```
 daniel-main-site/
-├── frontend/           # React application
+├── api/                    # Vercel Serverless Functions
+│   ├── create-gallery.js   # POST /api/create-gallery
+│   ├── get-images.js       # GET /api/get-images?folderId=...
+│   └── image.js            # GET /api/image?id=...
+├── frontend/               # React + Vite App
 │   ├── src/
-│   │   ├── components/ # Reusable components
-│   │   ├── pages/      # Page components
-│   │   ├── services/   # API services
+│   │   ├── components/     # Reusable components
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API services
 │   │   └── styles/     # Global styles
 │   └── ...
 ├── backend/            # Express server
