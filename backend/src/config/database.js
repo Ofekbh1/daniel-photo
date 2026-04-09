@@ -1,0 +1,26 @@
+/**
+ * PostgreSQL Database Configuration
+ * Uses the pg library for database connections
+ */
+
+const { Pool } = require('pg');
+
+// Create connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+});
+
+// Test connection on startup
+pool.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('❌ Database connection failed:', err.message);
+  } else {
+    console.log('✅ Database connected successfully');
+  }
+});
+
+module.exports = {
+  query: (text, params) => pool.query(text, params),
+  pool
+};
